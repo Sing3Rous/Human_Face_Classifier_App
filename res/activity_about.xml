@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorWhite"
+    tools:context=".AboutActivity">
+
+    <ImageView
+        android:id="@+id/about_icon"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:contentDescription="@string/about_icon_text"
+        app:srcCompat="@drawable/canvas"
+        android:scaleType="fitCenter"
+        android:paddingTop="60dp"
+        android:paddingBottom="60dp" />
+
+    <TextView
+        android:id="@+id/about_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:textSize="18sp"
+        android:typeface="normal"
+        android:textAllCaps="false"
+        android:paddingHorizontal="20dp"
+        android:text="@string/about_text"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/about_app_source"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:typeface="normal"
+        android:textAllCaps="false"
+        android:text="@string/about_app_source_link"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/about_nn_source"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:typeface="normal"
+        android:textAllCaps="false"
+        android:text="@string/about_nn_source_link"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/about_contact_mail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:typeface="normal"
+        android:textAllCaps="false"
+        android:autoLink="email"
+        android:text="@string/about_contact_mail"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/about_bottom_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:typeface="normal"
+        android:textAllCaps="false"
+        android:text="@string/about_bottom_text"
+        android:layout_gravity="bottom"
+        android:gravity="center"/>
+</LinearLayout>

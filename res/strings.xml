@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Human Face Classifier</string>
+    <string name="about_text">This app was made by Novosibirsk State Technical University Faculty of Applied Mathematics and Computer Science student as part of the bachelor\'s project for demonstration.</string>
+    <string name="about_icon_text">About icon</string>
+    <string name="about_app_source_link"><a href="https://github.com/Sing3Rous/Human_Face_Classifier_App">App Source</a></string>
+    <string name="about_nn_source_link"><a href="https://github.com/Sing3Rous/Human_Classifier_Neural_Network">Neural Network Source</a></string>
+    <string name="about_contact_mail"><a href="mailto:singerous@gmail.com">singerous@gmail.com</a></string>
+    <string name="about_bottom_text">\u00A9 David Utyuganov [SingeRous], 2020</string>
+</resources>
