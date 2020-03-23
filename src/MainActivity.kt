@@ -9,12 +9,11 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.ImageButton
-import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.yalantis.ucrop.UCrop
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
+import java.io.FileInputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             dispatchCameraIntent()
         }
         about_button.setOnClickListener {
-            openActivity("AboutActivity")
+            openAboutActivity()
         }
     }
 
@@ -45,54 +44,30 @@ class MainActivity : AppCompatActivity() {
             try {
                 val file = File(currentPath!!)
                 val uri = Uri.fromFile(file)
-                Log.d("TAKE_PICTURE", "got uri")
-                openCropActivity(uri!!, uri)
-                val resultUri = UCrop.getOutput(data!!)
-                main_photo.setImageURI(uri)
-                //imageView2.setImageBitmap(BitmapFactory.decodeFile(resultUri?.path))
+                openCropActivity(uri, uri)
             } catch(e: IOException) {
                 e.printStackTrace()
             }
-        }
-
-        if (requestCode == SELECT_PICTURE && resultCode == Activity.RESULT_OK) {
+        } else if (requestCode == UCrop.REQUEST_CROP && resultCode == Activity.RESULT_OK) {
             try {
-                val uri = data!!.data
-                Log.d("SELECT_PICTURE", "got uri")
-                openCropActivity(uri!!, uri)
-                val resultUri = UCrop.getOutput(data)
-                main_photo.setImageURI(uri)
-                //imageView2.setImageBitmap(BitmapFactory.decodeFile(resultUri?.path))
+                if (data != null) {
+                    val uri = UCrop.getOutput(data)
+                    showImage(uri!!)
+                }
+            } catch(e: IOException) {
+                e.printStackTrace()
+            }
+        } else if (requestCode == SELECT_PICTURE && resultCode == Activity.RESULT_OK) {
+            try {
+                val sourceUri = data?.data
+                val file = createImage()
+                val destinationUri = Uri.fromFile(file)
+                openCropActivity(sourceUri!!, destinationUri)
             } catch(e: IOException) {
                 e.printStackTrace()
             }
         }
     }
-
-/*    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == TAKE_PICTURE && resultCode == Activity.RESULT_OK) {
-            try {
-                val uri = Uri.parse(currentPath)
-                openCropActivity(uri, uri)
-            } catch(e: IOException) {
-                e.printStackTrace()
-            }
-        }
-
-        if (requestCode == UCrop.REQUEST_CROP && resultCode == Activity.RESULT_OK) {
-            val uri = UCrop.getOutput(data!!)
-            imageView2.setImageURI(uri)
-        }
-
-        if (requestCode == SELECT_PICTURE && resultCode == Activity.RESULT_OK) {
-            try {
-                val uri = data!!.data
-                imageView2.setImageURI(uri)
-            } catch(e: IOException) {
-                e.printStackTrace()
-            }
-        }
-    }*/
 
     fun dispatchGalleryIntent() {
         val intent = Intent()
@@ -111,7 +86,6 @@ class MainActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
             if (photoFile != null) {
-                //
                 val photoUri = FileProvider.getUriForFile(this,
                     "com.example.humanfaceclassifier.fileprovider",
                     photoFile)
@@ -131,6 +105,22 @@ class MainActivity : AppCompatActivity() {
         return image
     }
 
+    fun showImage(imageUri : Uri) {
+        try {
+            val file : File
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                file = File(imageUri.path!!)
+            } else {
+                file = File(currentPath!!)
+            }
+            val inputStream = FileInputStream(file)
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            main_photo.setImageBitmap(bitmap)
+        } catch(e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
     fun openCropActivity(sourceUri: Uri, destinationUri: Uri) {
         UCrop.of(sourceUri, destinationUri)
             .withAspectRatio(1f, 1f)
@@ -138,7 +128,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("openCropActivity", "got crop activity")
     }
 
-    fun openActivity(activityName: String) {
+    fun openAboutActivity() {
         val intent = Intent(this, AboutActivity::class.java)
         startActivity(intent)
     }
